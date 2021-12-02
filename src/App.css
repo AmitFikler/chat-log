@@ -1,0 +1,89 @@
+.login-page {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 90vh;
+  text-align: center;
+}
+
+.enter-form {
+  grid-area: 4 / 4 / 8 / 9;
+  border: 1px solid;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 9px;
+}
+
+.title-login {
+  grid-area: 3 / 5 / 4 / 8;
+}
+.username-input {
+  grid-area: 5 / 4 / 6 / 7;
+  height: 3vh;
+  margin: 20px;
+}
+.color-picker {
+  grid-area: 6 / 4 / 7 / 5;
+  margin: 20px;
+}
+.enter-button {
+  grid-area: 7 / 7 / 7 / 9;
+  height: 3vh;
+}
+
+/* CSS */
+.enter-button {
+  background-color: #fff000;
+  border-radius: 12px;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  transition: 200ms;
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.enter-button:not(:disabled):hover,
+.enter-button:not(:disabled):focus {
+  outline: 0;
+  background: #f4e603;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.15);
+}
+
+.enter-button:disabled {
+  filter: saturate(0.2) opacity(0.5);
+  cursor: not-allowed;
+}
+
+.chat-page {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  text-align: center;
+  height: 90vh;
+}
+
+.input-message {
+  grid-area: 8 / 2 / 9 / 7;
+  background-color: rgb(247, 146, 146);
+  border: 2px solid;
+}
+.contact-list {
+  grid-area: 2 / 7 / 9 / 9;
+  background-color: yellow;
+  border: 2px solid;
+}
+.chat {
+  grid-area: 2 / 2 / 8 / 7;
+  background-color: seagreen;
+  border: 2px solid;
+}
