@@ -6,8 +6,8 @@ const mongoose = require('mongoose');
 const env = process.env.NODE_ENV || 'production';
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 8080;
-const loginRouter = require('./routers/login');
-
+const loginRouter = require('./routers/users');
+const messageRouter = require('./routers/message');
 mongoose
   .connect(MONGO_URI)
   .then(() => {
@@ -18,8 +18,10 @@ mongoose
   });
 
 app.use(cors()); //cors middleware
+app.use(express.json());
 app.use(express.static(`${__dirname}/client/build`));
-app.use('/login', loginRouter);
+app.use('/users', loginRouter);
+app.use('/message', messageRouter);
 
 app.listen(PORT, () =>
   console.log(`app listening at http://localhost:${PORT}`)
