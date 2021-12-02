@@ -76,6 +76,13 @@
   grid-area: 8 / 2 / 9 / 7;
   background-color: rgb(247, 146, 146);
   border: 2px solid;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-content: stretch;
+  align-items: center;
+  padding: 20px;
 }
 .contact-list {
   grid-area: 2 / 7 / 9 / 9;
@@ -86,4 +93,9 @@
   grid-area: 2 / 2 / 8 / 7;
   background-color: seagreen;
   border: 2px solid;
+}
+
+.textarea-message {
+  width: 90%;
+  font-size: 17px;
 }
