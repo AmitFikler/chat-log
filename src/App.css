@@ -94,6 +94,7 @@
   grid-area: 2 / 2 / 8 / 7;
   background-color: seagreen;
   border: 2px solid;
+  overflow: auto;
 }
 
 .textarea-message {

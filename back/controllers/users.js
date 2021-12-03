@@ -16,10 +16,14 @@ exports.getAllUsers = async (req, res) => {
   const usernamesList = usersList.map((user) => user.username);
   console.log('update');
   res.set({
-    Connection: 'keep-alive',
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
+    Connection: 'keep-alive',
+
+    // enabling CORS
     'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers':
+      'Origin, X-Requested-With, Content-Type, Accept',
   });
   res.write(`data: ${JSON.stringify(usernamesList)}\n\n`);
 };

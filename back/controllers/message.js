@@ -13,5 +13,16 @@ exports.newMessage = async (req, res) => {
 
 exports.getAllMessage = async (req, res) => {
   const messageList = await Message.find({});
-  res.send(messageList);
+  res.set({
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    Connection: 'keep-alive',
+
+    // enabling CORS
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers':
+      'Origin, X-Requested-With, Content-Type, Accept',
+  });
+
+  res.write(`data: ${JSON.stringify(messageList)}\n\n`);
 };

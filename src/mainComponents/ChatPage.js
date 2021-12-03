@@ -1,12 +1,23 @@
 import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
 
-const source = new EventSource('http://localhost:8080/users');
 const ChatPage = ({ users, setUsers }) => {
-  source.onmessage = function logEvent(event) {
-    const data = JSON.parse(event.data);
-    setUsers(data);
+  useEffect(() => {
+    let eventSourceUsers = new EventSource('http://localhost:8080/users');
+    let eventSourceMessage = new EventSource('http://localhost:8080/message');
+    eventSourceUsers.onmessage = (e) => updateUsersList(JSON.parse(e.data));
+    eventSourceMessage.onmessage = (e) =>
+      updateMessagesList(JSON.parse(e.data));
+  }, []);
+
+  const updateUsersList = (user) => {
+    console.log(user);
+    setUsers(user);
   };
+  const updateMessagesList = (msg) => {
+    setMessages(msg);
+  };
+
   const [messages, setMessages] = useState([]);
   const textareaEl = useRef(null);
   async function sendMessage() {
@@ -31,7 +42,13 @@ const ChatPage = ({ users, setUsers }) => {
   // });
   return (
     <div className="chat-page">
-      <div className="chat">chat</div>
+      <div className="chat">
+        <ul>
+          {messages.map((msg) => {
+            return <li style={{ color: msg.color }}>{msg.message}</li>;
+          })}
+        </ul>
+      </div>
       <div className="contact-list">
         <h2 style={{ borderBottom: '2px solid', padding: '20px' }}>
           contact list
