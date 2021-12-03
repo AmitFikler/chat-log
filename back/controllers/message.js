@@ -26,7 +26,6 @@ exports.getAllMessage = async (req, res) => {
     'Access-Control-Allow-Headers':
       'Origin, X-Requested-With, Content-Type, Accept',
   });
-
   res.write(`data: ${JSON.stringify(messageList)}\n\n`);
   const newClient = {
     res,

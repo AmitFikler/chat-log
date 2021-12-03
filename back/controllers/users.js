@@ -15,6 +15,7 @@ exports.loginNewUser = async (req, res) => {
 };
 
 exports.getAllUsers = async (req, res) => {
+  const clientId = req.query.username;
   const usersList = await User.find({});
   const usernamesList = usersList.map((user) => user.username);
   console.log('update');
@@ -30,9 +31,22 @@ exports.getAllUsers = async (req, res) => {
   });
   res.write(`data: ${JSON.stringify(usernamesList)}\n\n`);
   const newClient = {
+    id: clientId,
     res,
   };
   clients.push(newClient);
+
+  req.on('close', () => {
+    console.log(`${clientId} Connection closed`);
+    User.findOneAndDelete({ username: clientId }, (err, docs) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(docs + 'deleted');
+      }
+    });
+    clients = clients.filter((c) => c.id !== clientId);
+  });
 };
 
 function sendToAll(user) {

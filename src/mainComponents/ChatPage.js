@@ -3,13 +3,19 @@ import { useEffect, useState, useRef } from 'react';
 
 const ChatPage = ({ users, setUsers }) => {
   useEffect(() => {
-    let eventSourceUsers = new EventSource('http://localhost:8080/users');
-    let eventSourceMessage = new EventSource(
-      `http://localhost:8080/message/?userName=${sessionStorage.getItem(
+    let eventSourceUsers = new EventSource(
+      `http://localhost:8080/users?username=${sessionStorage.getItem(
         'username'
       )}`
     );
-    eventSourceUsers.onmessage = (e) => updateUsersList(JSON.parse(e.data));
+    let eventSourceMessage = new EventSource(`http://localhost:8080/message`);
+    eventSourceUsers.onmessage = (e) => {
+      console.log(e.data);
+      setUsers((prevUsers) => {
+        const users = JSON.parse(e.data);
+        return users.length ? users : [...prevUsers, users.username];
+      });
+    };
     eventSourceMessage.onmessage = (e) => {
       setMessages((prevMessages) => {
         const messages = JSON.parse(e.data);
