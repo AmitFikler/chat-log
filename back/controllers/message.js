@@ -1,11 +1,14 @@
 const Message = require('../models/Message');
 
+let clients = [];
+
 exports.newMessage = async (req, res) => {
   try {
     const { username, message, color } = req.body;
-    const usernameData = new Message({ username, message, color });
-    await usernameData.save();
+    const messageData = new Message({ username, message, color });
+    await messageData.save();
     res.send('message send');
+    return sendToAll(messageData);
   } catch (error) {
     res.status(401).send(error);
   }
@@ -25,4 +28,13 @@ exports.getAllMessage = async (req, res) => {
   });
 
   res.write(`data: ${JSON.stringify(messageList)}\n\n`);
+  const newClient = {
+    res,
+  };
+  clients.push(newClient);
 };
+
+function sendToAll(msg) {
+  console.log(clients);
+  clients.forEach((c) => c.res.write(`data: ${JSON.stringify(msg)}\n\n`));
+}

@@ -4,19 +4,30 @@ import { useEffect, useState, useRef } from 'react';
 const ChatPage = ({ users, setUsers }) => {
   useEffect(() => {
     let eventSourceUsers = new EventSource('http://localhost:8080/users');
-    let eventSourceMessage = new EventSource('http://localhost:8080/message');
+    let eventSourceMessage = new EventSource(
+      `http://localhost:8080/message/?userName=${sessionStorage.getItem(
+        'username'
+      )}`
+    );
     eventSourceUsers.onmessage = (e) => updateUsersList(JSON.parse(e.data));
-    eventSourceMessage.onmessage = (e) =>
-      updateMessagesList(JSON.parse(e.data));
+    eventSourceMessage.onmessage = (e) => {
+      setMessages((prevMessages) => {
+        const messages = JSON.parse(e.data);
+        return messages.length ? messages : [...prevMessages, messages];
+      });
+    };
   }, []);
 
   const updateUsersList = (user) => {
-    console.log(user);
     setUsers(user);
   };
-  const updateMessagesList = (msg) => {
-    setMessages(msg);
-  };
+  // const updateMessagesList = (mmsg) => {
+  //   setMessages((prevMessages) => {
+  //     return messages.length ? mmsg : [...prevMessages, mmsg];
+  //   });
+  //   console.log(messages);
+  //   console.log(mmsg);
+  // };
 
   const [messages, setMessages] = useState([]);
   const textareaEl = useRef(null);
@@ -31,15 +42,12 @@ const ChatPage = ({ users, setUsers }) => {
           message: textareaValue,
         }
       );
+      textareaEl.current.value = '';
       console.log(request.data);
     } catch (error) {
       console.log(error);
     }
   }
-  // useEffect(() => {
-  //   console.log('use effect');
-  //   console.log(users);
-  // });
   return (
     <div className="chat-page">
       <div className="chat">
@@ -61,6 +69,14 @@ const ChatPage = ({ users, setUsers }) => {
       </div>
       <div className="input-message">
         <textarea
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              sendMessage();
+              return;
+            } else {
+              return;
+            }
+          }}
           ref={textareaEl}
           className="textarea-message"
           name="message"

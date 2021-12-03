@@ -1,11 +1,14 @@
 const User = require('../models/Users');
 
+let clients = [];
+
 exports.loginNewUser = async (req, res) => {
   try {
     const { username, color } = req.body;
     const usernameData = new User({ username, color });
     await usernameData.save();
     res.send('user saved');
+    return sendToAll(usernameData);
   } catch (error) {
     res.status(401).send(error);
   }
@@ -26,4 +29,13 @@ exports.getAllUsers = async (req, res) => {
       'Origin, X-Requested-With, Content-Type, Accept',
   });
   res.write(`data: ${JSON.stringify(usernamesList)}\n\n`);
+  const newClient = {
+    res,
+  };
+  clients.push(newClient);
 };
+
+function sendToAll(user) {
+  console.log(clients);
+  clients.forEach((c) => c.res.write(`data: ${JSON.stringify(user)}\n\n`));
+}
