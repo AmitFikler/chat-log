@@ -17,7 +17,7 @@ mongoose
     console.log('error connecting to MongoDB:', error.message);
   });
 
-app.use(cors('*')); //cors middleware
+app.use(cors()); //cors middleware
 app.use(express.json());
 app.use(express.static(`${__dirname}/client/build`));
 app.use('/users', loginRouter);

@@ -1,9 +1,14 @@
 const Message = require('../models/Message');
 
-exports.newMessage = (req, res) => {
-  const { username, message } = req.body;
-  const usernameData = new Message({ username, message });
-  usernameData.save().then(res.send('message saved'));
+exports.newMessage = async (req, res) => {
+  try {
+    const { username, message, color } = req.body;
+    const usernameData = new Message({ username, message, color });
+    await usernameData.save();
+    res.send('message send');
+  } catch (error) {
+    res.status(401).send(error);
+  }
 };
 
 exports.getAllMessage = async (req, res) => {

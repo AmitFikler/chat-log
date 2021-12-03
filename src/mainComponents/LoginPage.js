@@ -17,6 +17,7 @@ const LoginPage = () => {
         color,
       });
       sessionStorage.setItem('username', username);
+      sessionStorage.setItem('color', color);
       console.log(response);
       navigate('/chat');
     } catch (error) {
