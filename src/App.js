@@ -5,18 +5,7 @@ import ChatPage from './mainComponents/ChatPage';
 import LoginPage from './mainComponents/LoginPage';
 
 function App() {
-  const [users, setUsers] = useState([
-    'amit',
-    'amit',
-    'amit',
-    'amit',
-    'amit',
-    'amit',
-    'amit',
-    'amit',
-    'amit',
-    'amit',
-  ]);
+  const [users, setUsers] = useState([]);
 
   return (
     <>

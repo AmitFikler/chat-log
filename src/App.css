@@ -88,6 +88,7 @@
   grid-area: 2 / 7 / 9 / 9;
   background-color: yellow;
   border: 2px solid;
+  overflow: auto;
 }
 .chat {
   grid-area: 2 / 2 / 8 / 7;
@@ -98,4 +99,11 @@
 .textarea-message {
   width: 90%;
   font-size: 17px;
+}
+
+li {
+  list-style: none;
+  height: 30px;
+  width: 80%;
+  border: 1px solid;
 }

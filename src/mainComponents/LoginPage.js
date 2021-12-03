@@ -1,18 +1,28 @@
-import axios from 'axios';
 import { useRef } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const signInBtn = useRef(null);
   const inputUsername = useRef(null);
   const inputColor = useRef(null);
-  const newUser = async () => {
-    const username = inputUsername.current.value;
-    const color = inputColor.current.value;
-    await axios.put('http://localhost:8080/users/new-user', {
-      color: color,
-      username: username,
-    });
-  };
+
+  async function newUser() {
+    try {
+      const username = inputUsername.current.value;
+      const color = inputColor.current.value;
+      const response = await axios.put('http://localhost:8080/users/new-user', {
+        username,
+        color,
+      });
+      sessionStorage.setItem('username', username);
+      console.log(response);
+      navigate('/chat');
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="login-page">
       <h1 className="title-login">Welcome To {'<chat.log />'}</h1>

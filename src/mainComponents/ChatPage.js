@@ -1,4 +1,9 @@
+const source = new EventSource('http://localhost:8080/users');
 const ChatPage = ({ users, setUsers }) => {
+  source.onmessage = function logEvent(event) {
+    const data = JSON.parse(event.data);
+    setUsers(data);
+  };
   return (
     <div className="chat-page">
       <div className="chat">chat</div>
@@ -21,7 +26,7 @@ const ChatPage = ({ users, setUsers }) => {
         ></textarea>
         <button>
           {' '}
-          <i class="fas fa-paper-plane"></i> send
+          <i className="fas fa-paper-plane"></i> send
         </button>
       </div>
     </div>
