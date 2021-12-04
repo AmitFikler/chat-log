@@ -15,15 +15,6 @@ const ChatPage = ({ users, setUsers }) => {
     eventSourceUsers.onmessage = (e) => {
       setUsers((prevUsers) => {
         const users = JSON.parse(e.data);
-        toast.info(users.username, {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
         return users.length ? users : [...prevUsers, users];
       });
     };
@@ -56,17 +47,6 @@ const ChatPage = ({ users, setUsers }) => {
   }
   return (
     <div className="chat-page">
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
       <div className="chat">
         <div>
           {messages.map((msg) => {

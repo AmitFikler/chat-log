@@ -19,7 +19,7 @@ mongoose
 
 app.use(cors()); //cors middleware
 app.use(express.json());
-app.use(express.static(`${__dirname}/client/build`));
+app.use(express.static(`${__dirname}/build`));
 app.use('/users', loginRouter);
 app.use('/message', messageRouter);
 
