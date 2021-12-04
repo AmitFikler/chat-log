@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
+import Contact from '../components/contact';
 import Message from '../components/message';
 
 const ChatPage = ({ users, setUsers }) => {
@@ -13,7 +14,7 @@ const ChatPage = ({ users, setUsers }) => {
     eventSourceUsers.onmessage = (e) => {
       setUsers((prevUsers) => {
         const users = JSON.parse(e.data);
-        return users.length ? users : [...prevUsers, users.username];
+        return users.length ? users : [...prevUsers, users];
       });
     };
     eventSourceUsers.onopen = (e) => {
@@ -79,11 +80,11 @@ const ChatPage = ({ users, setUsers }) => {
         <h2 style={{ borderBottom: '2px solid', padding: '20px' }}>
           contact list
         </h2>
-        <ul>
+        <div className="contacts">
           {users.map((user) => {
-            return <li className="contact">{user}</li>;
+            return <Contact user={user.username} color={user.color} />;
           })}
-        </ul>
+        </div>
       </div>
       <div className="input-message">
         <textarea
