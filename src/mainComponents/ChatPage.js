@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import { useEffect, useState, useRef } from 'react';
 import Contact from '../components/contact';
 import Message from '../components/message';
@@ -14,32 +15,26 @@ const ChatPage = ({ users, setUsers }) => {
     eventSourceUsers.onmessage = (e) => {
       setUsers((prevUsers) => {
         const users = JSON.parse(e.data);
+        toast.info(users.username, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return users.length ? users : [...prevUsers, users];
       });
     };
-    eventSourceUsers.onopen = (e) => {
-      // console.log(userJoin);
-      console.log(e);
-    };
     eventSourceMessage.onmessage = (e) => {
       setMessages((prevMessages) => {
-        console.log(e.data);
         const messages = JSON.parse(e.data);
+
         return messages.length ? messages : [...prevMessages, messages];
       });
     };
   }, []);
-
-  // const updateUsersList = (user) => {
-  //   setUsers(user);
-  // };
-  // const updateMessagesList = (mmsg) => {
-  //   setMessages((prevMessages) => {
-  //     return messages.length ? mmsg : [...prevMessages, mmsg];
-  //   });
-  //   console.log(messages);
-  //   console.log(mmsg);
-  // };
 
   const [messages, setMessages] = useState([]);
   const textareaEl = useRef(null);
@@ -55,18 +50,29 @@ const ChatPage = ({ users, setUsers }) => {
         }
       );
       textareaEl.current.value = '';
-      console.log(request.data);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   }
   return (
     <div className="chat-page">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="chat">
         <div>
           {messages.map((msg) => {
             return (
               <Message
+                key={msg.createdAt}
                 color={msg.color}
                 message={msg.message}
                 username={msg.username}
@@ -82,7 +88,13 @@ const ChatPage = ({ users, setUsers }) => {
         </h2>
         <div className="contacts">
           {users.map((user) => {
-            return <Contact user={user.username} color={user.color} />;
+            return (
+              <Contact
+                key={user.createdAt}
+                user={user.username}
+                color={user.color}
+              />
+            );
           })}
         </div>
       </div>

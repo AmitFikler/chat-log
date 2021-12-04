@@ -15,41 +15,41 @@ exports.loginNewUser = async (req, res) => {
 };
 
 exports.getAllUsers = async (req, res) => {
-  const clientId = req.query.username;
-  const usersList = await User.find({});
-  // const usernamesList = usersList.map((user) => user.username);
-  // console.log('update');
-  res.set({
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    Connection: 'keep-alive',
+  try {
+    const clientId = req.query.username;
+    const usersList = await User.find({});
+    res.set({
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      Connection: 'keep-alive',
 
-    // enabling CORS
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers':
-      'Origin, X-Requested-With, Content-Type, Accept',
-  });
-  res.write(`data: ${JSON.stringify(usersList)}\n\n`);
-  const newClient = {
-    id: clientId,
-    res,
-  };
-  clients.push(newClient);
-
-  req.on('close', () => {
-    console.log(`${clientId} Connection closed`);
-    User.findOneAndDelete({ username: clientId }, (err, docs) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(docs + 'deleted');
-      }
+      // enabling CORS
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers':
+        'Origin, X-Requested-With, Content-Type, Accept',
     });
-    clients = clients.filter((c) => c.id !== clientId);
-  });
-  req.on('open', (e) => {
-    res.send(e);
-  });
+    res.write(`data: ${JSON.stringify(usersList)}\n\n`);
+    const newClient = {
+      id: clientId,
+      res,
+    };
+    clients.push(newClient);
+
+    req.on('close', () => {
+      console.log(`${clientId} Connection closed`);
+      clients = clients.filter((c) => c.id !== clientId);
+      User.findOneAndDelete({ username: clientId }, async (err, docs) => {
+        if (err) {
+          console.log(err);
+        } else {
+          const usersWithout = await User.find({});
+          sendToAll(usersWithout);
+        }
+      });
+    });
+  } catch (error) {
+    res.status(401).send(error);
+  }
 };
 
 function sendToAll(user) {

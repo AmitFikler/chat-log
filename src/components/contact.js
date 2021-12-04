@@ -1,10 +1,14 @@
 const Contact = ({ user, color }) => {
-  const splitUser = user.split('');
   function handleWithBlack(color) {
     if (color === '#000000') {
       return '#FFFFFF';
     }
     return color;
+  }
+
+  function getFirstLetter(user) {
+    const splitUser = user.split('');
+    return splitUser[0].toUpperCase();
   }
   if (user)
     return (
@@ -13,7 +17,7 @@ const Contact = ({ user, color }) => {
           style={{ backgroundColor: handleWithBlack(color) }}
           className="iconUser"
         >
-          {splitUser[0].toUpperCase()}
+          {getFirstLetter(user)}
         </span>
         {user}
       </div>

@@ -2,8 +2,9 @@ import moment from 'moment';
 
 const Message = ({ color, message, username, time }) => {
   const convertTime = (date) => {
-    console.log(moment(date, moment.ISO_8601));
+    return moment(date).format('LT');
   };
+
   function checkWhoSend(user) {
     if (user === sessionStorage.getItem('username')) {
       return 'You:';
@@ -14,7 +15,7 @@ const Message = ({ color, message, username, time }) => {
 
   return (
     <div className="message" style={{ color }}>
-      <div>{time}</div>
+      <div>{convertTime(time)}</div>
       <div className="flexMessage">
         <div style={{ fontWeight: 'bold' }}>{checkWhoSend(username)}</div>
         {message}
