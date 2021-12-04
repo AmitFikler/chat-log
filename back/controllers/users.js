@@ -47,6 +47,9 @@ exports.getAllUsers = async (req, res) => {
     });
     clients = clients.filter((c) => c.id !== clientId);
   });
+  req.on('open', (e) => {
+    res.send(e);
+  });
 };
 
 function sendToAll(user) {

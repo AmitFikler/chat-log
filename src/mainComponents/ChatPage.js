@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
+import Message from '../components/message';
 
 const ChatPage = ({ users, setUsers }) => {
   useEffect(() => {
@@ -10,23 +11,27 @@ const ChatPage = ({ users, setUsers }) => {
     );
     let eventSourceMessage = new EventSource(`http://localhost:8080/message`);
     eventSourceUsers.onmessage = (e) => {
-      console.log(e.data);
       setUsers((prevUsers) => {
         const users = JSON.parse(e.data);
         return users.length ? users : [...prevUsers, users.username];
       });
     };
+    eventSourceUsers.onopen = (e) => {
+      // console.log(userJoin);
+      console.log(e);
+    };
     eventSourceMessage.onmessage = (e) => {
       setMessages((prevMessages) => {
+        console.log(e.data);
         const messages = JSON.parse(e.data);
         return messages.length ? messages : [...prevMessages, messages];
       });
     };
   }, []);
 
-  const updateUsersList = (user) => {
-    setUsers(user);
-  };
+  // const updateUsersList = (user) => {
+  //   setUsers(user);
+  // };
   // const updateMessagesList = (mmsg) => {
   //   setMessages((prevMessages) => {
   //     return messages.length ? mmsg : [...prevMessages, mmsg];
@@ -57,11 +62,18 @@ const ChatPage = ({ users, setUsers }) => {
   return (
     <div className="chat-page">
       <div className="chat">
-        <ul>
+        <div>
           {messages.map((msg) => {
-            return <li style={{ color: msg.color }}>{msg.message}</li>;
+            return (
+              <Message
+                color={msg.color}
+                message={msg.message}
+                username={msg.username}
+                time={msg.createdAt}
+              />
+            );
           })}
-        </ul>
+        </div>
       </div>
       <div className="contact-list">
         <h2 style={{ borderBottom: '2px solid', padding: '20px' }}>
@@ -69,7 +81,7 @@ const ChatPage = ({ users, setUsers }) => {
         </h2>
         <ul>
           {users.map((user) => {
-            return <li>{user}</li>;
+            return <li className="contact">{user}</li>;
           })}
         </ul>
       </div>
@@ -89,7 +101,7 @@ const ChatPage = ({ users, setUsers }) => {
           cols="30"
           rows="2"
         ></textarea>
-        <button onClick={() => sendMessage()}>
+        <button style={{ height: '100%' }} onClick={() => sendMessage()}>
           {' '}
           <i className="fas fa-paper-plane"></i> send
         </button>

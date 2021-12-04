@@ -82,7 +82,7 @@
   justify-content: space-between;
   align-content: stretch;
   align-items: center;
-  padding: 20px;
+  /* padding: 20px; */
 }
 .contact-list {
   grid-area: 2 / 7 / 9 / 9;
@@ -92,19 +92,31 @@
 }
 .chat {
   grid-area: 2 / 2 / 8 / 7;
-  background-color: seagreen;
+  background-image: url('./Pictures/whatsappbackground.jpg');
   border: 2px solid;
   overflow: auto;
 }
 
 .textarea-message {
-  width: 90%;
-  font-size: 17px;
+  width: 95%;
+  height: 100%;
 }
 
-li {
+.contact {
   list-style: none;
   height: 30px;
   width: 80%;
   border: 1px solid;
+}
+li {
+  list-style: none;
+}
+
+.message {
+  border: 0.001vh solid;
+}
+.flexdiv {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
